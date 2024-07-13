@@ -1,11 +1,24 @@
 import express from "express";
 import cors from "cors";
+import  dotenv  from "dotenv";
+import logger from "morgan";
+
+import { macaronsRoute} from "./routes/macarons-route.js";
+
+dotenv.config();
 
 const app = express();
+const formatsLogger = app.get('evn') === 'development' ? 'dev' : 'short';
 
+app.use(logger(formatsLogger));
 app.use(cors());
 app.use(express.json());
 
+
+app.use("/api/macarons", macaronsRoute);
+// app.use("/api/mochi", mochiRoute);
+// app.use("/api/other", otherRoute);
+// app.use("/api/thematic", thematicRoute)
 
 
 app.use((_, res) => {
