@@ -1,9 +1,11 @@
-import { Macaron } from "../models/macaron-model.js";
+import { Macaron } from "../models/product-model.js";
 import { ctrlWrapper, HttpError } from "../helpers/index.js";
 
 const getAllMacarons = async(req, res)=>{
-    const result = await Macaron.find();
+    const {page = 1, limit = 10}= req.query;
+    const skip = (page - 1) * limit
 
+    const result = await Macaron.find({}, null, {skip, limit});
     res.json(result);
 }
 

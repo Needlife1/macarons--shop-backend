@@ -2,7 +2,7 @@ import { Schema, model } from "mongoose";
 import { handleMongooseError } from "../helpers/index.js";
 import  Joi  from "joi";
 
-const macaronSchema = new Schema({
+const productSchema = new Schema({
  title:{
     type:String,
     require:true,
@@ -26,7 +26,7 @@ const macaronSchema = new Schema({
 
 },{ versionKey: false, timestamps:true });
 
-macaronSchema.post('save',handleMongooseError );
+productSchema.post('save',handleMongooseError );
 
 export const addSchema = Joi.object({
    title:Joi.string().required(),
@@ -37,4 +37,6 @@ export const addSchema = Joi.object({
 })
 
 
-export const Macaron = model("macaron", macaronSchema);
+export const Macaron = model("macaron", productSchema);
+export const Mochi = model("mochi", productSchema);
+export const Other = model("other", productSchema);
