@@ -1,16 +1,17 @@
 import express from "express";
 import { validateBody } from "../helpers/index.js";
+import { controllers } from "../controllers/mochi-controller.js";
 import { addSchema } from "../models/product-model.js";
-import {isValidId}from '../middlewares/index.js'
+import {isValidId, authenticate, upload}from '../middlewares/index.js'
 
 export const mochiRoute = express.Router();
 
-mochiRoute.get('/');
+mochiRoute.get('/', controllers.getAll);
 
-mochiRoute.get('/:id', isValidId);
+mochiRoute.get('/:id', isValidId, controllers.getById);
 
-mochiRoute.post('/', validateBody(addSchema));
+mochiRoute.post('/',authenticate, upload.single('productImg'), validateBody(addSchema), controllers.addNew);
 
-mochiRoute.post('/:id',isValidId, validateBody(addSchema));
+mochiRoute.put('/:id',authenticate, isValidId, upload.single('productImg'), validateBody(addSchema), controllers.updateById);
 
-mochiRoute.delete('/:id', isValidId);
+mochiRoute.delete('/:id',authenticate, isValidId, controllers.deleteById);

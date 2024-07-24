@@ -1,6 +1,6 @@
 import { Schema, model } from "mongoose";
 import { handleMongooseError } from "../helpers/index.js";
-import  Joi  from "joi";
+import  Joi from "joi";
 
 const productSchema = new Schema({
  title:{
@@ -23,6 +23,11 @@ const productSchema = new Schema({
     require:true,
 
  },
+ productImg:{
+ type: String,
+ require:true,
+ 
+ }
 
 },{ versionKey: false, timestamps:true });
 
@@ -33,7 +38,6 @@ export const addSchema = Joi.object({
    price:Joi.string().required(),
    description:Joi.string().required(),
    weight:Joi.string().required(),
-
 })
 
 

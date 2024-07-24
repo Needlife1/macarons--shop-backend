@@ -1,4 +1,4 @@
-import { Macaron } from "../models/product-model.js";
+import { Other } from "../models/product-model.js";
 import { ctrlWrapper, HttpError, getPublicIdFromUrl } from "../helpers/index.js";
 import * as fs from "node:fs/promises";
 import { cloudinary } from "../helpers/index.js";
@@ -9,13 +9,13 @@ const getAll = async(req, res)=>{
     const {page = 1, limit = 10}= req.query;
     const skip = (page - 1) * limit
 
-    const result = await Macaron.find({}, null, {skip, limit});
+    const result = await Other.find({}, null, {skip, limit});
     res.json(result);
 }
 
 const getById = async (req, res)=>{
     const {id}=req.params;
-    const result = await Macaron.findById(id);
+    const result = await Other.findById(id);
    
     if (!result) {
         throw HttpError(404, 'Not found');
@@ -37,13 +37,13 @@ const addNew = async (req,res)=>{
        productImg: result.secure_url,
     };
 
-    const newProduct = await Macaron.create(productData);
+    const newProduct = await Other.create(productData);
     res.status(201).json(newProduct);
 }
 
 const updateById = async (req, res)=>{
     const {id} = req.params;
-    const existingProduct = await Macaron.findById(id);
+    const existingProduct = await Other.findById(id);
     if (!existingProduct) {
         throw HttpError(404, 'Not found');
     };
@@ -76,7 +76,7 @@ const updateById = async (req, res)=>{
         productImg: productImgURL,
     };
 
-    const result = await Macaron.findByIdAndUpdate(id, productData, {new:true});
+    const result = await Other.findByIdAndUpdate(id, productData, {new:true});
 
     if (!result) {
         throw HttpError(404, 'Not found');
@@ -87,12 +87,12 @@ const updateById = async (req, res)=>{
 const deleteById = async (req,res)=>{
 const {id} = req.params;
 
-const existingProduct = await Macaron.findById(id);
+const existingProduct = await Other.findById(id);
     if (!existingProduct) {
         throw new HttpError(404, 'Not found');
     }
 
-const result = await Macaron.findByIdAndDelete(id);
+const result = await Other.findByIdAndDelete(id);
 
 if (result && existingProduct.productImg) {
     const publicId = getPublicIdFromUrl(existingProduct.productImg);

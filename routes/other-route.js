@@ -1,17 +1,18 @@
 import express from "express";
 import { validateBody } from "../helpers/index.js";
 import { addSchema } from "../models/product-model.js";
-import {isValidId}from '../middlewares/index.js'
+import {isValidId, authenticate, upload}from '../middlewares/index.js'
+import { controllers } from "../controllers/other-controller.js";
 
 
 export const otherRoute = express.Router();
 
-otherRoute.get('/');
+otherRoute.get('/', controllers.getAll);
 
-otherRoute.get('/:id', isValidId);
+otherRoute.get('/:id', isValidId, controllers.getById);
 
-otherRoute.post('/', validateBody(addSchema));
+otherRoute.post('/',authenticate, upload.single('productImg'), validateBody(addSchema), controllers.addNew);
 
-otherRoute.post('/:id', isValidId, validateBody(addSchema));
+otherRoute.put('/:id',authenticate, isValidId, upload.single('productImg'), validateBody(addSchema), controllers.updateById);
 
-otherRoute.delete('/:id', isValidId);
+otherRoute.delete('/:id',authenticate, isValidId, controllers.deleteById);
